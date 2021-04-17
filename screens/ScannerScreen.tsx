@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
   },
   square: {
   position: 'absolute',
-  top: 120,
-  left: 35,
-  bottom: 220,
-  right: 35
+  top: 275,
+  left: 45,
+  bottom: 290,
+  right: 45
   },
   container2: {
     flex: 1,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    top: 500,
+    top: 550,
     right: 100,
     left: 100,
     backgroundColor: "red",
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   button_scan: {
     position: 'absolute',
-    bottom: 550,
+    bottom: 375,
     right: 100,
     left: 100,
     backgroundColor: "red",
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   button_green: {
     position: 'absolute',
-    top: 500,
+    top: 550,
     right: 100,
     left: 100,
     backgroundColor: "green",
