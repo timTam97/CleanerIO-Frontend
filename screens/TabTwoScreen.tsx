@@ -29,7 +29,9 @@ export default function TabTwoScreen() {
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        //style={StyleSheet.absoluteFillObject}
+        style={styles.square}
+
       />
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
@@ -40,6 +42,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  square: {
+  position: 'absolute',
+  top: 100,
+  left: 35,
+  bottom: 220,
+  right: 35
+
+  }
 });
