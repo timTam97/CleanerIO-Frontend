@@ -5,10 +5,16 @@
 
 export type RootStackParamList = {
   Root: undefined;
+  PinAuth: undefined;
+  TransportType: undefined;
+  Selection: CleanItem;
+  Scanner: CleanItem;
+  Confirmation: CleanItem;
+  CleaningLog: CleanItem;
   NotFound: undefined;
 };
 
-export type BarcodeScanner = {
+export type CleanItem = {
   FleetID: string | null;
   trainID: string | null; //Primary Key
   Carriage: number | null; 
