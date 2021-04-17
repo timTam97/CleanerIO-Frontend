@@ -4,7 +4,15 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { getTransportColors, RootStackParamList, TransportTypes } from '../types';
 type props = StackScreenProps<RootStackParamList, 'Confirmation'>
-
+let randomNames = [
+  {fst: 'Patrick', snd:'Jones'},
+  {fst: 'Timothy', snd:'Samjeep'},
+  {fst: 'Marcus', snd:'Limosine'},
+  {fst: 'Mary', snd:'Johnson'},
+  {fst: 'Eddie', snd:'Smith'},
+  {fst: 'Asfar', snd:'Soman'}
+]
+  
 
 export default function ConfirmationScreen({ navigation, route }: props) {
   let busImage = require('../assets/images/PTVBus.png');
@@ -19,10 +27,14 @@ export default function ConfirmationScreen({ navigation, route }: props) {
       selectedImage = trainImage;
       break;
   }
-  let startTime = new Date(Date.now())
-  if (route.params.startTime !== undefined) {
-    startTime = new Date(route.params.startTime);
+  let timeTaken = Math.random()*1200000+600000;
+  let timeTaken1= new Date(timeTaken) 
+  let endTime = new Date(Date.now())
+  if (route.params.endTime !== undefined) {
+    endTime = new Date(route.params.endTime);
   }
+  let startTime = new Date(endTime.getTime() - timeTaken);
+  let name = randomNames[Math.floor((Math.random()*5))]
   return (
     <View style={styles.container}>
       <View style={[styles.preview, {backgroundColor: getTransportColors(route.params.transportType)}]}>
@@ -39,8 +51,8 @@ export default function ConfirmationScreen({ navigation, route }: props) {
         <View style={styles.detailUp}><View style={styles.Dcells}><Text style={styles.header}>Clean Date</Text><Text>{startTime.getDay()}/{startTime.getMonth()}/{startTime.getFullYear()}</Text></View>
         <View style={styles.Dcells}><Text style={styles.header}>Next Scheduled{"\n"}Clean</Text><Text>16/4/2021</Text></View></View>
         <View style={{...styles.detailUp}}><View style={styles.Dcells}>
-          <Text style={[styles.ralign, styles.header]}>Clean Time</Text><Text style={styles.ralign}>16/4/2021</Text></View>
-        <View style={styles.Dcells}><Text style={[styles.ralign, styles.header]}>Completed{"\n"}by</Text><Text style={styles.ralign}>Asfar{"\n"}Soman </Text></View></View>
+          <Text style={[styles.ralign, styles.header]}>Clean Time</Text><Text style={styles.ralign}>{timeTaken1.getUTCHours()}:{timeTaken1.getUTCMinutes()}</Text></View>
+        <View style={styles.Dcells}><Text style={[styles.ralign, styles.header]}>Completed{"\n"}by</Text><Text style={styles.ralign}>{name.fst}{"\n"}{name.snd}</Text></View></View>
       </View>
       <TouchableOpacity style={[styles.tickButton, {backgroundColor: getTransportColors(route.params.transportType)}]}>
         <Image style={{width: 30, height: 30, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -15}, {translateY: -15}]}}source={require('../assets/images/TickSquare.png')}></Image>

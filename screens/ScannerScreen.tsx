@@ -34,7 +34,7 @@ export default function ScannerScreen({route, navigation}: props) {
         {fleetID: fleetAssocator(id), 
           trainID: id, 
           carriage: Number.parseInt(subsection), 
-          startTime: Date.now(),
+          endTime: Date.now(),
           transportType: info,
         });
       // console.log(type);
