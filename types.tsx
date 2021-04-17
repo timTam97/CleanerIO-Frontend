@@ -26,11 +26,11 @@ export function getTransportColors(a: TransportTypes) {
 }
 
 export type CleanItem = {
-  fleetID: string | undefined | null;
-  trainID: string | undefined | null; //Primary Key
-  carriage: number | undefined | null; 
-  startTime: Date | undefined | null; //Primary Key
-  endTime: Date | undefined | null;
+  fleetID?: string | undefined;
+  trainID?: string | undefined; //Primary Key
+  carriage?: number | undefined; 
+  startTime?: number | undefined; //Primary Key
+  endTime?: number | undefined;
   transportType: TransportTypes;
   // usedSupplies: [number];
 }

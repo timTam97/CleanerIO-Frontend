@@ -7,6 +7,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
+import ConfirmationScreen from '../screens/ConfirmationScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LogScreen from '../screens/LogScreen';
 
@@ -35,6 +36,7 @@ function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Root" component={HomeScreen} options={{ title: 'Home' }} />
+      <Stack.Screen name="Confirmation" component={ConfirmationScreen} options={{ title: 'Home' }} />
       <Stack.Screen name="Scanner" component={ScannerScreen} options={{ title: 'Scanner' }} />
       <Stack.Screen name="CleaningLog" component={LogScreen} options={{ title: 'Logs' }} />
       <Stack.Screen name="Selection" component={SelectionScreen} options={{ title: 'Select' }} />

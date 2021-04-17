@@ -24,9 +24,6 @@ export default function SelectionScreen({route, navigation}: props) {
         transportType: tram,
         fleetID: undefined,
         trainID: undefined,
-        carriage: null,
-        startTime: null,
-        endTime: null
       })};
   return (
     <View style={{...styles.container, ...fonts}}>

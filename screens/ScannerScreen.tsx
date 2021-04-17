@@ -1,9 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
+import { StackScreenProps } from '@react-navigation/stack';
+import { CleanItem, getTransportColors, RootStackParamList, TransportTypes } from '../types';
+type props = StackScreenProps<RootStackParamList, 'Scanner'>
+let fleetAssocator = (a : string) => {if(a < '333') {return 'AKCY'} if(a < '666') {return 'SFGT'} else {return 'JGUD'}} 
 
-export default function ScannerScreen() {
-  const [hasPermission, setHasPermission] = useState(null);
+export default function ScannerScreen({route, navigation}: props) {
+  // const [information, setInformation] = useState<CleanItem>(
+  //   {
+  //     transportType: route.params.transportType,
+  //     fleetID: undefined,
+  //     trainID: undefined,
+  //   }
+  // )
+  function processBarcode(barcode: string) {
+    try {
+      let type = barcode.substring(0,2);
+      let id = barcode.substring(3,6);
+      let subsection = barcode.substring(6,8);
+      let info = route.params.transportType;
+      if (type === 'TM') {
+        info = TransportTypes.Tram;
+        // setInformation({...information, transportType: TransportTypes.Tram});
+      } else if (type === 'TN') {
+        info = TransportTypes.Train;
+        // setInformation({...information, transportType: TransportTypes.Train});
+      } else if (type === 'BS') {
+        info = TransportTypes.Bus;
+        // setInformation({...information, transportType: TransportTypes.Bus});
+      }
+      navigation.navigate('Confirmation', 
+        {fleetID: fleetAssocator(id), 
+          trainID: id, 
+          carriage: Number.parseInt(subsection), 
+          startTime: Date.now(),
+          transportType: info,
+        });
+      // console.log(type);
+      // console.log(id);
+      // console.log(subsection);
+
+      // Number.parseInt(subsection)
+      // setInformation({...information, fleetID: fleetAssocator(id)});
+      // setInformation({...information, trainID: id});
+      // setInformation({...information, carriage: Number.parseInt(subsection)});
+      // console.log(information)
+    }
+    catch {
+      alert('unable to scan barcode');
+    }
+  }
+  const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
@@ -13,10 +61,10 @@ export default function ScannerScreen() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned! Please update logs`);
-    
+    processBarcode(data);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned! Please update logs`);
   };
 
 
@@ -42,7 +90,7 @@ export default function ScannerScreen() {
   
         />
         {scanned &&
-        <TouchableOpacity onPress={() => setScanned(false)}  style ={styles.button_scan}>
+        <TouchableOpacity onPress={() => setScanned(false)}  style ={[styles.button_scan, {backgroundColor: getTransportColors(route.params.transportType)}]}>
          <Text style={styles.buttonText}> {'Tap Button to Scan Again'}  </Text>
          </TouchableOpacity>
          }
@@ -56,6 +104,7 @@ export default function ScannerScreen() {
     <View style={styles.container}>
       <TouchableOpacity onPress={() => alert('Please Scan Barcode PLS')} style={styles.button}>
         <Text style={styles.buttonText}>Please Scan Barcode</Text>
+        
       </TouchableOpacity>
       
       <BarCodeScanner
@@ -134,3 +183,14 @@ const styles = StyleSheet.create({
     textAlign:'center',
   },
 });
+
+/**
+ * {
+        transportType: tram,
+        fleetID: undefined,
+        trainID: undefined,
+        carriage: null,
+        startTime: null,
+        endTime: null
+      }
+ */
