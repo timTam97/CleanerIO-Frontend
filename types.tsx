@@ -7,10 +7,10 @@ export type RootStackParamList = {
   Root: undefined;
   PinAuth: undefined;
   TransportType: undefined;
-  Selection: CleanItem;
+  Selection: undefined;
   Scanner: CleanItem;
   Confirmation: CleanItem;
-  CleaningLog: CleanItem;
+  CleaningLog: undefined;
   NotFound: undefined;
 };
 export function getTransportColors(a: TransportTypes) {
