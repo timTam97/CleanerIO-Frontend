@@ -15,9 +15,12 @@ export default function TabTwoScreen() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Bar code with type ${type} and data ${data} has been scanned! Please update logs`);
+    
   };
 
+
+  
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
@@ -25,13 +28,35 @@ export default function TabTwoScreen() {
     return <Text>No access to camera</Text>;
   }
 
+  if(scanned === true){
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => alert('Logs have been updated')} style={styles.button_green}>
+          <Text style={styles.buttonText}>Update Logs</Text>
+        </TouchableOpacity>
+        
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          //style={StyleSheet.absoluteFillObject}
+          style={styles.square}
+  
+        />
+        {scanned &&
+        <TouchableOpacity onPress={() => setScanned(false)}  style ={styles.button_scan}>
+         <Text style={styles.buttonText}> {'Tap Button to Scan Again'}  </Text>
+         </TouchableOpacity>
+         }
+      </View>
+    );
+  
+  }
+
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => alert('Logs have been updated')} style={styles.button}>
-        <Text style={styles.buttonText}>Update Logs</Text>
+      <TouchableOpacity onPress={() => alert('Please Scan Barcode PLS')} style={styles.button}>
+        <Text style={styles.buttonText}>Please Scan Barcode</Text>
       </TouchableOpacity>
-      
       
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -54,7 +79,7 @@ const styles = StyleSheet.create({
   },
   square: {
   position: 'absolute',
-  top: 100,
+  top: 120,
   left: 35,
   bottom: 220,
   right: 35
@@ -81,7 +106,25 @@ const styles = StyleSheet.create({
     top: 500,
     right: 100,
     left: 100,
-    backgroundColor: "blue",
+    backgroundColor: "red",
+    padding: 20,
+    borderRadius: 5,
+  },
+  button_scan: {
+    position: 'absolute',
+    bottom: 550,
+    right: 100,
+    left: 100,
+    backgroundColor: "red",
+    padding: 20,
+    borderRadius: 5,
+  },
+  button_green: {
+    position: 'absolute',
+    top: 500,
+    right: 100,
+    left: 100,
+    backgroundColor: "green",
     padding: 20,
     borderRadius: 5,
   },
