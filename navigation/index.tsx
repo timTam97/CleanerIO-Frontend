@@ -8,8 +8,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
+import LogScreen from '../screens/LogScreen';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
+import ScannerScreen from '../screens/ScannerScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -32,8 +34,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-
       <Stack.Screen name="Root" component={HomeScreen} options={{ title: 'Home' }} />
+      <Stack.Screen name="Scanner" component={ScannerScreen} options={{ title: 'Scanner' }} />
+      <Stack.Screen name="CleaningLog" component={LogScreen} options={{ title: 'Logs' }} />
       <Stack.Screen name="Selection" component={SelectionScreen} options={{ title: 'Select' }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>

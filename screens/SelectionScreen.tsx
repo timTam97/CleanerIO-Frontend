@@ -7,15 +7,22 @@ import { getTransportColors, RootStackParamList } from '../types';
 type props = StackScreenProps<RootStackParamList, 'Selection'>
 
 export default function SelectionScreen({route, navigation}: props) {
-  route.params
+  let defaultInformation = {
+    transportType: route.params.transportType,
+    fleetID: undefined,
+    trainID: undefined,
+    carriage: null,
+    startTime: null,
+    endTime: null
+  }
   return (
     <View style={styles.container}>
       <View style={{ position: 'absolute', width: '100%', top: 0, left: 0, height: '30%', backgroundColor: '#D72D2E', zIndex: 0}}/>
       <Image style={styles.background} source={require('../assets/images/WaveBorder.png')} ></Image>
-      <TouchableOpacity onPress={()=>{}} style={[styles.button, {backgroundColor: getTransportColors(route.params.transportType)}]}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('Scanner', defaultInformation)}} style={[styles.button, {backgroundColor: getTransportColors(route.params.transportType)}]}>
           
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>{}} style={[styles.button, {backgroundColor: '#707372'}]}>
+      <TouchableOpacity onPress={()=>{navigation.navigate('CleaningLog', defaultInformation)}} style={[styles.button, {backgroundColor: '#707372'}]}>
           
       </TouchableOpacity>
     </View>

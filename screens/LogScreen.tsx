@@ -27,7 +27,7 @@ function Item({ title }) {
   );
 }
 
-export default function TabOneScreen() {
+export default function LogScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
