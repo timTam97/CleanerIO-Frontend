@@ -27,8 +27,8 @@ async function submittToServer(item: CleanItem) {
       "fleetID": item.fleetID,
       "trainID": item.trainID,
       "carriage": item.carriage,
-      "startTime": item.startTime,
-      "endTime": item.endTime,
+      "startTime": item.startTime?.toString(),
+      "endTime": item.endTime?.toString(),
       "transportType": item.transportType,
       "usedSupplies": [2,3,4]
     }),
