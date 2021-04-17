@@ -13,17 +13,28 @@ export type RootStackParamList = {
   CleaningLog: CleanItem;
   NotFound: undefined;
 };
+export function getTransportColors(a: TransportTypes) {
+  if (a == TransportTypes.Train) {
+    return '#3070C7';
+  }
+  if (a == TransportTypes.Bus) {
+    return '#EF8833';
+  }
+  else {
+    return '#88BC41';
+  }
+}
 
 export type CleanItem = {
-  FleetID: string | null;
-  trainID: string | null; //Primary Key
-  Carriage: number | null; 
-  startTime: Date | null; //Primary Key
-  endTime: Date | null;
+  fleetID: string | undefined | null;
+  trainID: string | undefined | null; //Primary Key
+  carriage: number | undefined | null; 
+  startTime: Date | undefined | null; //Primary Key
+  endTime: Date | undefined | null;
   transportType: TransportTypes;
-  usedSupplies: [number];
+  // usedSupplies: [number];
 }
-enum TransportTypes {
+export enum TransportTypes {
   Train = 'train', 
   Bus = 'bus', 
   Tram = 'tram'
