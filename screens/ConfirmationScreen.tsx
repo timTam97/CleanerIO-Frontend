@@ -19,6 +19,10 @@ export default function ConfirmationScreen({ navigation, route }: props) {
       selectedImage = trainImage;
       break;
   }
+  let startTime = new Date(Date.now())
+  if (route.params.startTime !== undefined) {
+    startTime = new Date(route.params.startTime);
+  }
   return (
     <View style={styles.container}>
       <View style={[styles.preview, {backgroundColor: getTransportColors(route.params.transportType)}]}>
@@ -32,25 +36,62 @@ export default function ConfirmationScreen({ navigation, route }: props) {
         </Text>
       </View>
       <View style={styles.details}>
-        <View><View></View><View></View></View>
-        <View></View>
+        <View style={styles.detailUp}><View style={styles.Dcells}><Text style={styles.header}>Clean Date</Text><Text>{startTime.getDay()}/{startTime.getMonth()}/{startTime.getFullYear()}</Text></View>
+        <View style={styles.Dcells}><Text style={styles.header}>Next Scheduled{"\n"}Clean</Text><Text>16/4/2021</Text></View></View>
+        <View style={{...styles.detailUp}}><View style={styles.Dcells}>
+          <Text style={[styles.ralign, styles.header]}>Clean Time</Text><Text style={styles.ralign}>16/4/2021</Text></View>
+        <View style={styles.Dcells}><Text style={[styles.ralign, styles.header]}>Completed{"\n"}by</Text><Text style={styles.ralign}>Asfar{"\n"}Soman </Text></View></View>
       </View>
-      <TouchableOpacity>
-
+      <TouchableOpacity style={[styles.tickButton, {backgroundColor: getTransportColors(route.params.transportType)}]}>
+        <Image style={{width: 30, height: 30, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -15}, {translateY: -15}]}}source={require('../assets/images/TickSquare.png')}></Image>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  tickButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 5,
+    elevation: 2,
+    marginTop: 50
+  },
+  header: {
+    color: '#33343480',
+  },
+  Dcells: {
+    height: 80
+  },
+  ralign: {
+    textAlign: 'right'
+  },
+  detailUp: {
+    margin: 0,
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    textAlign: 'right',
+  },
   details: {
     width: '80%',
     borderRadius: 15,
-    padding: 10,
+    padding: 20,
     backgroundColor: 'white',
+    justifyContent: 'space-between',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 5,
+    elevation: 2,
+    marginTop: 20
   },
   preview: {
     width: '80%',
@@ -60,6 +101,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 5,
+    elevation: 2
   },
   previewText: {
     color: 'white',
