@@ -28,7 +28,7 @@ export function getTransportColors(a: TransportTypes) {
 export type CleanItem = {
   fleetID?: string | undefined;
   trainID?: string | undefined; //Primary Key
-  carriage?: number | undefined; 
+  carriage?: string | undefined; 
   startTime?: number | undefined; //Primary Key
   endTime?: number | undefined;
   transportType: TransportTypes;

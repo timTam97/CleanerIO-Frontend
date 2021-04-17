@@ -2,7 +2,7 @@ import { useFonts, OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import { getTransportColors, RootStackParamList, TransportTypes } from '../types';
+import { CleanItem, getTransportColors, RootStackParamList, TransportTypes } from '../types';
 type props = StackScreenProps<RootStackParamList, 'Confirmation'>
 let randomNames = [
   {fst: 'Patrick', snd:'Jones'},
@@ -12,7 +12,28 @@ let randomNames = [
   {fst: 'Eddie', snd:'Smith'},
   {fst: 'Asfar', snd:'Soman'}
 ]
-  
+
+
+async function submittToServer(item: CleanItem) {
+  console.log(item);
+  return await fetch('https://m3gztf94o0.execute-api.ap-southeast-2.amazonaws.com/add',
+  {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "fleetID": item.fleetID,
+      "trainID": item.trainID,
+      "carriage": item.carriage,
+      "startTime": item.startTime,
+      "endTime": item.endTime,
+      "transportType": item.transportType,
+      "usedSupplies": [2,3,4]
+    }),
+  }).then(console.log).catch(() => {alert("Unable to submitt to the server"); return Promise.reject})
+}
 
 export default function ConfirmationScreen({ navigation, route }: props) {
   let busImage = require('../assets/images/PTVBus.png');
@@ -54,7 +75,12 @@ export default function ConfirmationScreen({ navigation, route }: props) {
           <Text style={[styles.ralign, styles.header]}>Clean Time</Text><Text style={styles.ralign}>{timeTaken1.getUTCHours()}:{timeTaken1.getUTCMinutes()}</Text></View>
         <View style={styles.Dcells}><Text style={[styles.ralign, styles.header]}>Completed{"\n"}by</Text><Text style={styles.ralign}>{name.fst}{"\n"}{name.snd}</Text></View></View>
       </View>
-      <TouchableOpacity style={[styles.tickButton, {backgroundColor: getTransportColors(route.params.transportType)}]}>
+      <TouchableOpacity style={[styles.tickButton, {backgroundColor: getTransportColors(route.params.transportType)}]} 
+        onPress={async () => { submittToServer(
+          {...route.params, 
+            endTime: endTime.getTime(), 
+            startTime: startTime.getTime(),
+          }).then(()=>{navigation.popToTop(); alert("Saved")}) }}>
         <Image style={{width: 30, height: 30, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -15}, {translateY: -15}]}}source={require('../assets/images/TickSquare.png')}></Image>
       </TouchableOpacity>
     </View>

@@ -33,7 +33,7 @@ export default function ScannerScreen({route, navigation}: props) {
       navigation.navigate('Confirmation', 
         {fleetID: fleetAssocator(id), 
           trainID: id, 
-          carriage: Number.parseInt(subsection), 
+          carriage: subsection, 
           endTime: Date.now(),
           transportType: info,
         });
