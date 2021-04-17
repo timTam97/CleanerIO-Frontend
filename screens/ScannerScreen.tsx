@@ -17,8 +17,8 @@ export default function ScannerScreen({route, navigation}: props) {
   function processBarcode(barcode: string) {
     try {
       let type = barcode.substring(0,2);
-      let id = barcode.substring(3,6);
-      let subsection = barcode.substring(6,8);
+      let id = barcode.substring(2,5);
+      let subsection = barcode.substring(5,7);
       let info = route.params.transportType;
       if (type === 'TM') {
         info = TransportTypes.Tram;
