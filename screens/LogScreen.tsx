@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, SectionList, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, SectionList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-
+import { CleanItem, deserialiser } from '../types';
 
 const DATA = [
   {
@@ -17,19 +17,40 @@ const DATA = [
     ],
   },
 ];
+async function getData(): Promise<[CleanItem]> {
+  return fetch('https://m3gztf94o0.execute-api.ap-southeast-2.amazonaws.com/list', {method: 'GET'}).then((a)=>{console.log("got data");return a.json()}).then((a) => a.map(deserialiser));
+}
 
-const Item = ({ title }) => (
-  <TouchableOpacity>
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-    <Image style={styles.test} source={require('../assets/images/PTVTrain.png')} ></Image>
-  </View>
-  </TouchableOpacity>
-);
+const useMountEffect = (fun) => useEffect(fun, [])
+
+const Item = ({data}) => 
+{
+  let timeTaken = new Date(Date.now());
+  if (data.endTime !== undefined && data.startTime !== undefined)
+  {
+    timeTaken = new Date(Number(data.endTime) - Number(data.startTime))
+  }
+
+  return (
+    <TouchableOpacity>
+    <View style={styles.item}>
+      <Text style={styles.title}>{`            Fleet ${data.fleetID}                ${Number(data.startTime)>Date.now()? 'Scheduled':'Cleaned'}\n             Train #${data.trainID}                    ${Number(data.startTime)>Date.now()? 'cleaning': `${timeTaken.getHours()}:${timeTaken.getMinutes()}`}` }</Text>
+      <Image style={styles.test} source={require('../assets/images/PTVTrain.png')} ></Image>
+    </View>
+    </TouchableOpacity>
+  )
+};
 
 
 
 export default function App() {
+  const [data, setdata] = useState([]);
+  // let data = undefined
+  useMountEffect(() => {getData().then((a) => {setdata(a)})});
+  if (data !== undefined) {
+    console.log('done loading')
+  }
+
   return (
 
 
@@ -38,16 +59,14 @@ export default function App() {
     <Image style={styles.background} source={require('../assets/images/WaveBorder.png')} ></Image>
     <Text style={styles.title2}>         CLEANING LOG:</Text>
     <Text style={styles.title2}>16/04/2021</Text>
-
-
-<SectionList
-  sections={DATA}
-  keyExtractor={(item, index) => item + index}
-  //renderSectionHeader={({ section: { title } }) => <Text style={styles.header}>{title}</Text>}
-
-  renderItem={({ item }) => <Item title={item} />}
-/>
-</SafeAreaView>
+  {data === undefined ? <ActivityIndicator size="large" />: null }
+  <SectionList
+    sections={data}
+    keyExtractor={(item, index) => item + index}
+    //renderSectionHeader={({ section: { title } }) => <Text style={styles.header}>{title}</Text>}
+    renderItem={({ item }) => <Item data={item} />}
+  />
+  </SafeAreaView>
 
 
   );
@@ -67,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    // padding: 20,
   },
 
   container_safe: {

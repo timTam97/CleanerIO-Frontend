@@ -24,7 +24,20 @@ export function getTransportColors(a: TransportTypes) {
     return '#88BC41';
   }
 }
-
+export function deserialiser(item: any): CleanItem {
+  try {
+    return {
+      fleetID: item.fleetID,
+      trainID: item.trainID,
+      carriage: item.carriage,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      transportType: [TransportTypes.Train, TransportTypes.Bus, TransportTypes.Bus][Math.floor(Math.random()*3)]
+    }
+  } catch {
+    throw Error;
+  }
+}
 export type CleanItem = {
   fleetID?: string | undefined;
   trainID?: string | undefined; //Primary Key
