@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    top: 550,
+    top: 700,
     right: 100,
     left: 100,
     backgroundColor: "red",

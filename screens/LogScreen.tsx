@@ -12,17 +12,66 @@ import {
 import Constants from "expo-constants";
 import { CleanItem, deserialiser } from "../types";
 
-const DATA = [
+let DATA = [
     {
         //title: 'CLEANING LOG: \n 16/04/2021',
         data: [
-            "            Fleet HCMT                Cleaned\n            Train #88                    21:33:35 \n            Carriage #5",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #6                22:00:00",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #7                22:30:00",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #7                22:30:00",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #7                22:30:00",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #7                22:30:00",
-            "            Fleet HCMT                Scheduled\n            Train #88                    Clean \n            Carriage #7                22:30:00",
+            {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "HCMT",
+                "startTime": 1618717374748,
+                "trainID": "012",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "HITATCHI",
+                "startTime": 1618717374748,
+                "trainID": "123",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "COMENG",
+                "startTime": 1618717374748,
+                "trainID": "546",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "HCMT",
+                "startTime": 1618717374748,
+                "trainID": "832",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "HCMT",
+                "startTime": 1618717374748,
+                "trainID": "345",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "SIEMENS",
+                "startTime": 1618717374748,
+                "trainID": "654",
+                "transportType": "tram",
+              },
+              {
+                "carriage": "05",
+                "endTime": 1618718037989,
+                "fleetID": "ALSTOM",
+                "startTime": 1618717374748,
+                "trainID": "419",
+                "transportType": "tram",
+              },
         ],
     },
 ];
@@ -71,15 +120,13 @@ const Item = ({ data }) => {
 
 export default function App() {
     const [data, setdata] = useState([]);
-    getData().then((a) => {
-        let newone = a.forEach((b)=>{
-            return {
-                data: [a]
-            }
-        })
-        global.data = newone;
-        // console.log(a[0])
-    });
+    // getData().then((a) => {
+    //     let newone = a.forEach((b)=>{
+    //         DATA.push(b)
+    //     })
+    //     global.data = newone;
+    //     // console.log(a[0])
+    // });
 
     // let data = undefined
     // const ok = await getData();
@@ -118,9 +165,9 @@ export default function App() {
             <Text style={styles.title2}>16/04/2021</Text>
             {data === undefined ? <ActivityIndicator size="large" /> : null}
             <SectionList
-                sections={global.data}
+                sections={DATA}
                 keyExtractor={(item, index) => item + index}
-                //renderSectionHeader={({ section: { title } }) => <Text style={styles.header}>{title}</Text>}
+                // renderSectionHeader={({ section: { title } }) => <Text style={styles.header}>{title}</Text>}
                 renderItem={({ item }) => <Item data={item} />}
             />
         </SafeAreaView>
