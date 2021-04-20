@@ -10,71 +10,9 @@ import {
     ActivityIndicator,
 } from "react-native";
 import Constants from "expo-constants";
-import { CleanItem, deserialiser } from "../types";
+import { CleanItem, deserialiser, TransportTypes } from "../types";
 
-let DATA = [
-    {
-        //title: 'CLEANING LOG: \n 16/04/2021',
-        data: [
-            {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "HCMT",
-                "startTime": 1618717374748,
-                "trainID": "012",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "HITATCHI",
-                "startTime": 1618717374748,
-                "trainID": "123",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "COMENG",
-                "startTime": 1618717374748,
-                "trainID": "546",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "HCMT",
-                "startTime": 1618717374748,
-                "trainID": "832",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "HCMT",
-                "startTime": 1618717374748,
-                "trainID": "345",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "SIEMENS",
-                "startTime": 1618717374748,
-                "trainID": "654",
-                "transportType": "tram",
-              },
-              {
-                "carriage": "05",
-                "endTime": 1618718037989,
-                "fleetID": "ALSTOM",
-                "startTime": 1618717374748,
-                "trainID": "419",
-                "transportType": "tram",
-              },
-        ],
-    },
-];
+
 async function getData(): Promise<[CleanItem]> {
     return fetch(
         "https://m3gztf94o0.execute-api.ap-southeast-2.amazonaws.com/list",
@@ -87,16 +25,29 @@ async function getData(): Promise<[CleanItem]> {
         .then((a) => a.map(deserialiser));
 }
 
-const useMountEffect = (fun) => useEffect(fun, []);
+// const useMountEffect = (fun) => useEffect(fun, []);
 
-const Item = ({ data }) => {
+const Item = ({ data } : {data: CleanItem}) => {
     let timeTaken = new Date(Date.now());
     if (data.endTime !== undefined && data.startTime !== undefined) {
         timeTaken = new Date(Number(data.endTime) - Number(data.startTime));
     }
-
+    let imageReq = require("../assets/images/PTVTrain.png");
+    switch (data.transportType) {
+        case TransportTypes.Bus:
+            imageReq = require("../assets/images/PTVBus.png");
+            break;
+        case TransportTypes.Tram:
+            imageReq = require("../assets/images/PTVTram.png");
+            break;
+        default:
+            break;
+    }
     return (
         <TouchableOpacity>
+            {/* <Text>
+                Hello
+            </Text> */}
             <View style={styles.item}>
                 <Text style={styles.title}>{`            Fleet ${
                     data.fleetID
@@ -104,14 +55,14 @@ const Item = ({ data }) => {
                     Number(data.startTime) > Date.now()
                         ? "Scheduled"
                         : "Cleaned"
-                }\n             Train #${data.trainID}                    ${
+                    }\n             ${data.transportType} #${data.trainID}                    ${
                     Number(data.startTime) > Date.now()
                         ? "cleaning"
                         : `${timeTaken.getHours()}:${timeTaken.getMinutes()}`
                 }`}</Text>
                 <Image
                     style={styles.test}
-                    source={require("../assets/images/PTVTrain.png")}
+                    source={imageReq}
                 ></Image>
             </View>
         </TouchableOpacity>
@@ -119,31 +70,17 @@ const Item = ({ data }) => {
 };
 
 export default function App() {
-    const [data, setdata] = useState([]);
-    // getData().then((a) => {
-    //     let newone = a.forEach((b)=>{
-    //         DATA.push(b)
-    //     })
-    //     global.data = newone;
-    //     // console.log(a[0])
+    const [data, setdata] = useState([{
+        data: []
+    }]);
+    React.useEffect(()=>{
+        getData().then((a) => {return [{data: a}]}).then((a) => setdata(a)).then(() => console.log(data))
+    }, [])
+    // useMountEffect(() => {
+    //     // getData().then((a) => {
+    //     //     setdata(a);
+    //     // });
     // });
-
-    // let data = undefined
-    // const ok = await getData();
-    // setdata(ok)
-    // React.useEffect(()=>{
-    //   getData().then(console.log)
-    // })
-    // // useMountEffect(() => {
-    // //     // getData().then((a) => {
-    // //     //     setdata(a);
-    // //     // });
-    // // });
-    // console.log(data)
-    // if (data !== undefined) {
-    //     console.log("done loading");
-    // }
-
     return (
         <SafeAreaView style={styles.container}>
             <View
@@ -163,11 +100,11 @@ export default function App() {
             ></Image>
             <Text style={styles.title2}> CLEANING LOG:</Text>
             <Text style={styles.title2}>16/04/2021</Text>
-            {data === undefined ? <ActivityIndicator size="large" /> : null}
             <SectionList
-                sections={DATA}
-                keyExtractor={(item, index) => item + index}
+                sections={data}
+                keyExtractor={(item, index) => (item.startTime + index).toString()}
                 // renderSectionHeader={({ section: { title } }) => <Text style={styles.header}>{title}</Text>}
+                ListEmptyComponent={<ActivityIndicator size="large"  style={{zIndex: 999}}/>}
                 renderItem={({ item }) => <Item data={item} />}
             />
         </SafeAreaView>

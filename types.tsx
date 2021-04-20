@@ -32,7 +32,7 @@ export function deserialiser(item: any): CleanItem {
       carriage: item.carriage,
       startTime: item.startTime,
       endTime: item.endTime,
-      transportType: [TransportTypes.Train, TransportTypes.Bus, TransportTypes.Bus][Math.floor(Math.random()*3)]
+      transportType: item.transportType ?? [TransportTypes.Train, TransportTypes.Bus, TransportTypes.Bus][Math.floor(Math.random()*3)]
     }
   } catch {
     throw Error;
