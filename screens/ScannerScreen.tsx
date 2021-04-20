@@ -4,7 +4,7 @@ import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CleanItem, getTransportColors, RootStackParamList, TransportTypes } from '../types';
 type props = StackScreenProps<RootStackParamList, 'Scanner'>
-let fleetAssocator = (a : string) => {if(a < '333') {return 'AKCY'} if(a < '666') {return 'SFGT'} else {return 'JGUD'}} 
+let fleetAssocator = (a : string) => {if(a < '333') {return 'CODEBREW-TEST'} if(a < '666') {return 'SFGT'} else {return 'JGUD'}} 
 
 export default function ScannerScreen({route, navigation}: props) {
   // const [information, setInformation] = useState<CleanItem>(
@@ -16,9 +16,14 @@ export default function ScannerScreen({route, navigation}: props) {
   // )
   function processBarcode(barcode: string) {
     try {
-      let type = barcode.substring(0,2);
-      let id = barcode.substring(2,5);
-      let subsection = barcode.substring(5,7);
+      //barcodes are always 8 chars long
+      let newCode = barcode
+      if (barcode.includes("amazonaws")) {
+        newCode = barcode.substring(barcode.length - 8, barcode.length)
+      }
+      let type = newCode.substring(0,2);
+      let id = newCode.substring(2,5);
+      let subsection = newCode.substring(5,8);
       let info = route.params.transportType;
       if (type === 'TM') {
         info = TransportTypes.Tram;
